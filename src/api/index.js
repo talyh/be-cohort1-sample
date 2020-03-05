@@ -3,10 +3,10 @@ const express = require("express");
 const { healthRouter } = require("../routes/health/health.router");
 const {
   communityGroups
-} = require("../routes/communityGroups/communityGroups.router");
+} = require("../routes/communityGroups/community_groups.router");
 
 const router = express.Router();
 router.use("/health", healthRouter);
-router.use("/communityGroups", communityGroups);
+router.use("/community_groups", communityGroups);
 
 module.exports = router;
