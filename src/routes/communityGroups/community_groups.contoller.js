@@ -11,9 +11,7 @@ const listCommunityGroups = (req, res) => {
 };
 
 const getCommunityGroup = (req, res) => {
-  console.log(req.params.id);
   const record = data.filter(record => record.id === parseInt(req.params.id));
-  console.log(record);
   res.send(record);
 };
 
@@ -36,8 +34,21 @@ const addCommunityGroup = async (req, res) => {
   });
 };
 
+const deleteCommunityGroup = async (req, res) => {
+  const newCommunityGroupsData = data.filter(
+    group => group.id !== parseInt(req.params.id)
+  );
+  await writeFile(
+    "db/communityGtoups.data.json",
+    JSON.stringify(newCommunityGroupsData)
+  );
+  res.status(200);
+  res.send();
+};
+
 module.exports = {
   listCommunityGroups,
   getCommunityGroup,
-  addCommunityGroup
+  addCommunityGroup,
+  deleteCommunityGroup
 };

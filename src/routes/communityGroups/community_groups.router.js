@@ -4,7 +4,8 @@ const { check, body } = require("express-validator");
 const {
   listCommunityGroups,
   getCommunityGroup,
-  addCommunityGroup
+  addCommunityGroup,
+  deleteCommunityGroup
 } = require("./community_groups.contoller");
 
 const router = express.Router();
@@ -27,6 +28,7 @@ router.post(
   ],
   addCommunityGroup
 );
+router.delete("/:id", deleteCommunityGroup);
 
 module.exports = {
   communityGroups: router
