@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { promisify } = require("util");
+const { validationResult } = require("express-validator");
 
 const data = require("../../../db/communityGtoups.data.json");
 
@@ -17,6 +18,11 @@ const getCommunityGroup = (req, res) => {
 };
 
 const addCommunityGroup = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
   const id = data.length + 1;
   const newCommunityGroupsData = [...data, { id, ...req.body }];
   await writeFile(
