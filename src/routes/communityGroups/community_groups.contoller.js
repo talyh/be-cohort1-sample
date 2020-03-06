@@ -15,7 +15,9 @@ const listCommunityGroups = (req, res) => {
 
 // get a community group by its id if it exists
 const getCommunityGroup = (req, res) => {
-  const record = data.filter(record => record.id === parseInt(req.params.id));
+  const record = data.filter(
+    record => record.id === parseInt(req.params.id)
+  )[0];
 
   if (record.length === 0) {
     return res.status(404).send();
