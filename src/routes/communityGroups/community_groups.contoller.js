@@ -34,6 +34,31 @@ const addCommunityGroup = async (req, res) => {
   });
 };
 
+const updateCommunityGroup = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+  }
+
+  let groupData;
+
+  const newCommunityGroupsData = data.map(group => {
+    if (group.id === parseInt(req.params.id)) {
+      groupData = { ...group, ...req.body };
+      return groupData;
+    }
+
+    return group;
+  });
+
+  await writeFile(
+    "db/communityGtoups.data.json",
+    JSON.stringify(newCommunityGroupsData)
+  );
+  res.status(200);
+  return res.json(groupData);
+};
+
 const deleteCommunityGroup = async (req, res) => {
   const newCommunityGroupsData = data.filter(
     group => group.id !== parseInt(req.params.id)
@@ -50,5 +75,6 @@ module.exports = {
   listCommunityGroups,
   getCommunityGroup,
   addCommunityGroup,
+  updateCommunityGroup,
   deleteCommunityGroup
 };
