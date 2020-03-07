@@ -2,9 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
-const YAML = require("yamljs");
-const path = require("path");
-const swaggerDocument = YAML.load(path.join(__dirname, "/swagger.yaml"));
+const swaggerDocument = require("./swagger.json");
 
 const router = require("./api");
 const { logger } = require("./utils/logger");

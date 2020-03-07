@@ -20,17 +20,7 @@
         "operationId": "listCommunityGroups",
         "responses": {
           "200": {
-            "description": "Available groups retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CommunityGroupResponse"
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/SuccessfulListOfRecordsOperation"
           }
         }
       },
@@ -43,21 +33,19 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommunityGroupRequestPost"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CommunityGroup"
+                  }
+                ],
+                "required": ["name", "location"]
               }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": "Created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CommunityGroupResponse"
-                }
-              }
-            }
+          "200": {
+            "$ref": "#/components/responses/SuccessfulRecordCreation"
           },
           "422": {
             "description": "Invalid input"
@@ -77,14 +65,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CommunityGroupResponse"
-                }
-              }
-            }
+            "$ref": "#/components/responses/SuccessfulRecordOperation"
           },
           "404": {
             "description": "Community Group not found"
@@ -105,21 +86,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommunityGroupRequestPut"
+                "$ref": "#/components/schemas/CommunityGroup"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Successful Operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CommunityGroupResponse"
-                }
-              }
-            }
+            "$ref": "#/components/responses/SuccessfulRecordOperation"
           }
         }
       },
@@ -153,25 +127,7 @@
       }
     },
     "schemas": {
-      "CommunityGroupRequestPost": {
-        "type": "object",
-        "required": ["name", "location"],
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "Fun Fun Group"
-          },
-          "description": {
-            "type": "string",
-            "example": "We do fun fun stuff"
-          },
-          "location": {
-            "type": "string",
-            "example": "Toronto, Ontario"
-          }
-        }
-      },
-      "CommunityGroupRequestPut": {
+      "CommunityGroup": {
         "type": "object",
         "properties": {
           "name": {
@@ -187,26 +143,69 @@
             "example": "Toronto, Ontario"
           }
         }
+      }
+    },
+    "responses": {
+      "SuccessfulListOfRecordsOperation": {
+        "description": "Available groups retrieved",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "format": "int64"
+                  }
+                },
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CommunityGroup"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
-      "CommunityGroupResponse": {
-        "type": "object",
-        "required": ["name", "location"],
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string",
-            "example": "Fun Fun Group"
-          },
-          "description": {
-            "type": "string",
-            "example": "We do fun fun stuff"
-          },
-          "location": {
-            "type": "string",
-            "example": "Toronto, Ontario"
+      "SuccessfulRecordCreation": {
+        "description": "Successful Operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/CommunityGroup"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "SuccessfulRecordOperation": {
+        "description": "Successful Operation",
+        "content": {
+          "application/json": {
+            "schema": {
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              },
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/CommunityGroup"
+                }
+              ]
+            }
           }
         }
       }
