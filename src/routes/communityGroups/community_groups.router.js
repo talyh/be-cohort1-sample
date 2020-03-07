@@ -8,6 +8,7 @@ const {
   updateCommunityGroup,
   deleteCommunityGroup
 } = require("./community_groups.contoller");
+const { validateBody } = require("../../middleware/validate-body");
 
 const router = express.Router();
 
@@ -32,6 +33,7 @@ router.post(
       .notEmpty()
       .isString()
   ],
+  validateBody,
   addCommunityGroup
 );
 router.put(
@@ -55,6 +57,7 @@ router.put(
       .notEmpty()
       .isString()
   ],
+  validateBody,
   updateCommunityGroup
 );
 router.delete("/:id", deleteCommunityGroup);

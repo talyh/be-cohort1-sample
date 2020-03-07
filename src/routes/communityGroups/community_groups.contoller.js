@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { promisify } = require("util");
-const { validationResult } = require("express-validator");
+
+const { ERROR_CODES } = require("../../middleware/error-handler");
 
 const data = require("../../../db/communityGtoups.data.json");
 
@@ -19,8 +20,13 @@ const getCommunityGroup = (req, res) => {
     record => record.id === parseInt(req.params.id)
   )[0];
 
-  if (record.length === 0) {
-    return res.status(404).send();
+  if (!record) {
+    throw new Error(
+      JSON.stringify({
+        status: ERROR_CODES.NOT_FOUND,
+        message: "Record not found"
+      })
+    );
   }
 
   return res.status(200).json(record);
@@ -28,11 +34,6 @@ const getCommunityGroup = (req, res) => {
 
 // add a community group if the request has no errors
 const addCommunityGroup = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
-
   const id = data.length + 1;
   const newCommunityGroupsData = [...data, { id, ...req.body }];
   await writeFile(dbPath, JSON.stringify(newCommunityGroupsData));
@@ -44,11 +45,6 @@ const addCommunityGroup = async (req, res) => {
 
 // update a communityGroup by its id if the request has no errors
 const updateCommunityGroup = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({ errors: errors.array() });
-  }
-
   let groupData;
 
   const newCommunityGroupsData = data.map(group => {
