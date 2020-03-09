@@ -3,7 +3,7 @@ const { promisify } = require("util");
 
 const { ERROR_CODES } = require("../../middleware/error-handler");
 
-const data = require("../../../db/communityGtoups.data.json");
+const data = require("../../../db/communityGroups.data.json");
 
 const writeFile = promisify(fs.writeFile);
 
@@ -32,7 +32,7 @@ const getCommunityGroup = (req, res) => {
   return res.status(200).json(record);
 };
 
-// add a community group if the request has no errors
+// add a community group
 const addCommunityGroup = async (req, res) => {
   const id = data.length + 1;
   const newCommunityGroupsData = [...data, { id, ...req.body }];
@@ -43,7 +43,7 @@ const addCommunityGroup = async (req, res) => {
   });
 };
 
-// update a communityGroup by its id if the request has no errors
+// update a communityGroup by its id
 const updateCommunityGroup = async (req, res) => {
   let groupData;
 
